@@ -1,0 +1,99 @@
+\hypertarget{class_motor_control}{}\doxysection{Motor\+Control Class Reference}
+\label{class_motor_control}\index{MotorControl@{MotorControl}}
+
+
+Constructor for \mbox{\hyperlink{class_motor_control}{Motor\+Control}} object.  
+
+
+
+
+{\ttfamily \#include $<$motorcontrol.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_motor_control_addc2d7cef309bbe5526849048e801750}{Motor\+Control}} (uint32\+\_\+t EN, uint32\+\_\+t I\+N\+\_\+A, uint32\+\_\+t I\+N\+\_\+B, uint32\+\_\+t P\+WM)
+\begin{DoxyCompactList}\small\item\em Constructor for \mbox{\hyperlink{class_motor_control}{Motor\+Control}} object. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_motor_control_abe5458d3ba35f2373ade3343e1726981}{run\+Motor}} (uint32\+\_\+t duty\+\_\+cycle, bool clockwise)
+\begin{DoxyCompactList}\small\item\em Method in motor\+Control object that runs the motor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_motor_control_a879b24882b2ce85d1595facdd4fd3668}\label{class_motor_control_a879b24882b2ce85d1595facdd4fd3668}} 
+uint32\+\_\+t {\bfseries E\+N\+\_\+stored}
+\item 
+\mbox{\Hypertarget{class_motor_control_adbc9645bebab96f93dfeeeb313914eac}\label{class_motor_control_adbc9645bebab96f93dfeeeb313914eac}} 
+uint32\+\_\+t {\bfseries I\+N\+\_\+\+A\+\_\+stored}
+\item 
+\mbox{\Hypertarget{class_motor_control_ade87278136edd04031eddcccf6d2c519}\label{class_motor_control_ade87278136edd04031eddcccf6d2c519}} 
+uint32\+\_\+t {\bfseries I\+N\+\_\+\+B\+\_\+stored}
+\item 
+\mbox{\Hypertarget{class_motor_control_a587640b3bd2f778db2dbda067eee8c88}\label{class_motor_control_a587640b3bd2f778db2dbda067eee8c88}} 
+uint32\+\_\+t {\bfseries P\+W\+M\+\_\+stored}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Constructor for \mbox{\hyperlink{class_motor_control}{Motor\+Control}} object. 
+
+This object saves the pins that connect to the motor driver 
+\begin{DoxyParams}{Parameters}
+{\em EN} & pin on S\+T\+M32 that connects to EN pin on V\+N\+H5019 \\
+\hline
+{\em I\+N\+\_\+A} & pin on S\+T\+M32 that connects to I\+NA pin on V\+N\+H5019 \\
+\hline
+{\em I\+N\+\_\+B} & pin on S\+T\+M32 that connects to I\+NB pin on V\+N\+H5019 \\
+\hline
+{\em P\+WM} & pin on S\+T\+M32 that connects to P\+WM pin on V\+N\+H5019 \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_motor_control_addc2d7cef309bbe5526849048e801750}\label{class_motor_control_addc2d7cef309bbe5526849048e801750}} 
+\index{MotorControl@{MotorControl}!MotorControl@{MotorControl}}
+\index{MotorControl@{MotorControl}!MotorControl@{MotorControl}}
+\doxysubsubsection{\texorpdfstring{MotorControl()}{MotorControl()}}
+{\footnotesize\ttfamily Motor\+Control\+::\+Motor\+Control (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{EN,  }\item[{uint32\+\_\+t}]{I\+N\+\_\+A,  }\item[{uint32\+\_\+t}]{I\+N\+\_\+B,  }\item[{uint32\+\_\+t}]{P\+WM }\end{DoxyParamCaption})}
+
+
+
+Constructor for \mbox{\hyperlink{class_motor_control}{Motor\+Control}} object. 
+
+This object saves the pins that connect to the motor driver 
+\begin{DoxyParams}{Parameters}
+{\em EN} & pin on S\+T\+M32 that connects to EN pin on V\+N\+H5019 \\
+\hline
+{\em I\+N\+\_\+A} & pin on S\+T\+M32 that connects to I\+NA pin on V\+N\+H5019 \\
+\hline
+{\em I\+N\+\_\+B} & pin on S\+T\+M32 that connects to I\+NB pin on V\+N\+H5019 \\
+\hline
+{\em P\+WM} & pin on S\+T\+M32 that connects to P\+WM pin on V\+N\+H5019 \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_motor_control_abe5458d3ba35f2373ade3343e1726981}\label{class_motor_control_abe5458d3ba35f2373ade3343e1726981}} 
+\index{MotorControl@{MotorControl}!runMotor@{runMotor}}
+\index{runMotor@{runMotor}!MotorControl@{MotorControl}}
+\doxysubsubsection{\texorpdfstring{runMotor()}{runMotor()}}
+{\footnotesize\ttfamily void Motor\+Control\+::run\+Motor (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{duty\+\_\+cycle,  }\item[{bool}]{clockwise }\end{DoxyParamCaption})}
+
+
+
+Method in motor\+Control object that runs the motor. 
+
+Runs the motor at a desired speed given a duty cycle and direction (clockwise vs ccw) 
+\begin{DoxyParams}{Parameters}
+{\em duty\+\_\+cycle} & duty cycle to run motor at \\
+\hline
+{\em clockwise} & Whether the motor should run clockwise (true) or counterclockwise (false) \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{motorcontrol_8h}{motorcontrol.\+h}}\item 
+\mbox{\hyperlink{motorcontrol_8cpp}{motorcontrol.\+cpp}}\end{DoxyCompactItemize}

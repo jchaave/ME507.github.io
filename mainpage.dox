@@ -1,0 +1,241 @@
+/** @file mainpage.dox
+ *  @author Peyton Ulrich, Matthew Tagupa, and Jose Chavez
+ *  @copyright (c) 2020 by Peyton Ulrich, Matthew Tagupa, and Jose Chavez
+ *  @mainpage
+ *
+ *
+ *  @section s_intro Introduction
+ *  This project is to implement a Collision Avoidance System on a ground vehicle.
+ *  The idea, inspired by DIY Builder on YouTube, is to build a ground vehicle that
+ *  houses a STM32 Nucleo-64 development board with STM32L476RG MCU, a custom designed
+ *  PCB, an ultrasonic sensor, and an infrared sensor, all powered by a battery pack.
+ *  The goal is to write code in C++ that will communicate with the vehicle's motors, as well
+ *  as the two sensors, through the custom designed PCB and the Nucleo board to control the
+ *  the speed of the vehicle in order to avoid colliding with a wall.
+ *
+ *
+ *  @section sec_Prop Original Project Proposal
+ *
+ *  @image html Project_Proposal.png  width=75%
+ *  @image html 507-project_idea.png "Figure 1. Sketch of the original idea and design" width=50%
+ *
+ *  @author Peyton Ulrich, Matthew Tagupa, and Jose Chavez
+ *
+ *  @copyright (c) 2020 by Peyton Ulrich, Matthew Tagupa, and Jose Chavez
+ *
+ *  @date December 1, 2020
+ *
+ *  @page page_Hard Hardware Design
+ *  The design of the hardware for our system is split into three primary stages: component
+ *  selection, electronic system design, and mechanical system design. Due to the importance
+ *  of the PCB desing for the ME 507 course, we have given it its own dedicated page.
+ *
+ *  @section sec_Sel Component Selection
+ *  Our vehicle began with the internals needed to power the vehicle and all the components
+ *  and then building from the inside out. Each member of our team was comfortable using the
+ *  Nucleo - STM32L476RG microcontroller and since we all knew that this Nucleo had a large
+ *  amounts of capability with plenty of input and output pins, we decided to choose it as our
+ *  main computational unit. 
+ *
+ *  @image html Nucleo_L476RG.png "Figure 2. STM32L476RG Microcontroller used to control our project " \n
+ *
+ *  @subsection subsec_Sens Sensors
+ *  The main determining factor in selecting sensors was the cost. We went with the most affordable sensor
+ *  That we thought was able to do the job required. We went with one ultrasonic sensor for the longer range
+ *  of operation and we choose an infrared sensor for its shorter operation range. \n
+ *  
+ *  @image html UltrasonicSensor.png "Figure 3. HC-SR04 Ultrasonic Sensor chosen for its affordability and longer range of operation " \n
+ * \n
+ *
+ *  @image html IRSensor.jpg "Figure 4. Sharp GP2Y0A21YK Infrared Sensor chosen for its affordability and shorter range of operation " \n
+ *
+ *
+ *
+ *  @section sec_Mech Mechanical System Design
+ *  The final step for the physical design was the mechanical aspect of our Collision Avoidance System Vehicle. When we had proposed our
+ *  project, Figure 5 was the sketch that we had proposed to design. At the time of the proposal, we had only intended to use an ultrasonic
+ *  sensor to avoid collisions. After looking at the size of the ultrasonic sensor, adding an infrared sensor, and designing our board to
+ *  attach to the STM32 Nucleo as a shield, our design changed to the one shown in Figure 6. \n
+ *
+ *  @image html Original_Sketch.png "Figure 5. Original proposed design of the vehicle. " \n
+ *
+ *  @image html Final_Sketch.png "Figure 6. Final physical design plan before building. Although not shown, we are including the two sensors at the front of the vehicle. " \n
+ *
+ *  @author Peyton Ulrich, Matthew Tagupa, and Jose Chavez
+ *
+ *  @copyright (c) 2020 by Peyton Ulrich, Matthew Tagupa, and Jose Chavez
+ *
+ *  @date December 1, 2020
+ *
+ *  @page page_Des Electronic System Design
+ *  After selecting the components for our system, we were able to design the PCB to carry
+ *  these components and interface with the STM32 Nucleo. We had originally intended to create
+ *  a separate board that we would connect to the STM32 Nucleo as shown in Figure 4. However,
+ *  we were advised to make the circuit simple and easy to assemble, therefore we decided to
+ *  build the circuit around an Arduino shield for the STM32 Nucleo.  \n 
+ *
+ *  @subsection subsec PCB Schematic
+ *  We started the design of the board by looking at how the sensors would connect to the board.
+ *  The circuit integrating the HC-SR04 ultrasonic sensor was based on references [2] and [3].
+ *  They utilize two 10k resistors to create a voltage divider that split the sensor’s output
+ *  signal from 5V to 2.5V. The circuit integrating the Sharp GP2Y0A21YK infrared sensor was
+ *  based on reference [4] which also used two 10k resistors as a voltage divider. This also
+ *  split the sensor’s analog voltage output from a range of 0-5V to 0-2.5V. The voltage dividers
+ *  in this circuit were intended to keep the return signal to the MCU at the readable range of
+ *  0-3.3V. We added screw terminal blocks to make connecting the sensors easy. \n
+ *  After looking at sensor connections, we added the motor drivers and the components needed to
+ *  control their inputs and outputs. Dual VNH5019 motor driver chips were chosen to simultaneously
+ *  drive two motors. The circuit necessary to run these motor driver chips was based off Pololu’s
+ *  Dual VNH5019 Motor Driver Shield for Arduino [5]. Screw terminal blocks were included for the
+ *  input and output voltage for the motors to make the connection easy and stable.
+ *
+ *  @image html Final_Schematic.png "Figure 7. Schematic made using Eagle for the Collision Avoidance System " \n
+ *  
+ *  @subsection subsec_Board PCB Board Layout
+ *  The last step in our board design was to determine the layout of the components and the connection
+ *  lines between the components that needed to be connected. When we had first designed our board, the
+ *  motor drivers were to be mounted along the left side of the board while the rest of the components
+ *  would be placed on the other side of the board. However, this created a chaotic board design and the
+ *  motor driver chips did not seem like they would be getting enough voltage to power the motors in a timely
+ *  manner, which could ultimately permanently damage other resistors on the board. We were recommended to
+ *  increase the size of connections that were supplying high voltage outputs (of about 12V). We redesigned
+ *  the board into the one shown. This was the final board we designed and ordered for the
+ *  Collision Avoidance System. \n
+ *
+ *  @image html Final_Board_Layout.png "Figure 8. Final board layout made using Eagle for the Collision Avoidance System " \n
+ *  
+ *  @author Peyton Ulrich, Matthew Tagupa, and Jose Chavez
+ *
+ *  @copyright (c) 2020 by Peyton Ulrich, Matthew Tagupa, and Jose Chavez
+ *
+ *  @date December 1, 2020
+ *
+ *  @page pageCode Software Design
+ *  The software development was completed in three primary stages. First, software was developed to obtain distance readings
+ *  from each of the two sensors. Secondly, a MotorControl class was developed to control the motors using the VNH5019 motor driver
+ *  chip. Finally, the entire system was created to integrate these pieces and run the car as desired.
+ *
+ *  @section sec_SSD Sensor Software Development
+ *  First, code was created to obtain distance readings from the HC-SR04 ultrasonic sensor. This code was created based on example
+ *  code found at https://cdn-learn.adafruit.com/downloads/pdf/distance-measurement-ultrasound-hcsr04.pdf. To use the ultrasonic sensor,
+ *  a pulse must be sent to the TRIG pin on the sensor for 10us. The sensor will then output several sonic bursts from the transmitter and
+ *  wait to receive a return signal to the receiver. It will then output a pulse from the ECHO pin for a duration of time proportional to
+ *  the distance reading. This duration can then be converted into a distance reading mathematically.
+ *
+ *  @image html CodeSample_UltraS.png "Figure 9. Code Sample of Ultrasonic Sensing" \n
+ *  \n
+ *      Code was then created to run the Sharp GP2Y0A21YK infrared sensor. This sensor is supplied with 5V and returns an analog voltage signal
+ *  corresponding to the detected distance. To utilize this sensor, the AnalogRead function is used to read the analog voltage that is returned
+ *  to the corresponding pin. The code to utilize this sensor was based upon code found at https://github.com/sparkfun/simple_sketches/blob/master/sharp/sharp.ino.
+ *  The code to use this sensor is shown below.
+ *  
+ *  @image html IR_CodeSample.png "Figure 10. Code Sample of Infrared Sensing" \n
+ *
+ *  @subsection subsec_Cal Sensor Calibration
+ *  The ultrasonic sensor was calibrated by collecting data at distances ranging from 5 cm to 55 cm and recording the pulse duration returned from the sensor.
+ *  The data was plotted on the scatterplot as shown below and fitted with a linear trend line. The corresponding regression equation was found
+ *  (with a high R^2 value of 0.9995) and used to calculate the conversion factor of 1/58.2 to convert from duration to distance.
+ *
+ *  @image html UltrasonicCal.png "Figure 11. Calibration Plot of Ultrasonic Sensor" \n
+ *  \n
+ *
+ *  To calibrate this sensor, data was collected at distances ranging from 10cm to 50cm, and the corresponding analog voltage reading was collected.
+ *  The data was then plotted on the graph shown below using the inverse of distance on the x-axis, and voltage reading on the y-axis. It should be noted
+ *  that the voltage reading is shown in the units of the Arduino AnalogRead function, which returns an integer (from 0 to 1023) that is proportional to the
+ *  voltage reading in Volts. We then fit a linear trendline to this data (with a R^2 of 0.9949), and algebraically determined the conversion from voltage reading
+ *  to distance from this regression function. \n
+ *
+ *  @image html IR_Cal.png "Figure 12. Calibration Plot of Infrared Sensor" \n
+ *  \n
+ *
+ *  @section sec_MCSD Motor Control Software Development
+ *  Next, software was developed to be able to control a motor using the VNH5019 motor driver chip. This was done in the form of a class to allow for easy integration
+ *  into the system while using multiple motors. By structuring the code in this form, the user can declare a MotorControl object and specify the appropriate pins on
+ *  the STM32 nucleo that are connected to each relevant pin on the VNH5019 chip, and then run the motor through simple lines of code. This code can be found in the
+ *  motorcontroller.h and motorcontroller.cpp files in the repository. 
+ *
+ *  @image html VNH_TruthTable.png "Figure 13. Truth Table for VNH5019 Motor Driver" \n
+ *  \n
+ *
+ *  Four pins on each VNH5019 motor driver chip on our board are connected to the STM32: ENA/B, INA, INB, and PWM. By changing the output of these four pins, one can
+ *  control the direction and speed that the motor is driven at. The code needed to run the motor in various states is based on the truth table shown in Figure 13.
+ *  To change the direction of the motor, the INA and INB pins may be manipulated, and to brake the motor both pins may be set high. By varying the duty cycle provided
+ *  to the PWM pin, the speed of the motor can be controlled. This logic was implemented in the code shown in Figure 14.
+ *
+ *  @image html SampleCode_MotorControl.png "Figure 14. Sample Code for Motor Control" \n
+ *  \n
+ *
+ *  @section sec_Int System Integration
+ *  After separately developing the code to utilize the two sensors and the motor drivers, code was developed to integrate these functions into a functional system.
+ *  This was completed based upon the task diagram shown in Figure 15. Four tasks were used in this system and are described individually below. \n
+ *
+ *  @image html Task_Diag.png "Figure 15. Task Diagram of System" \n
+ *  \n
+ * 
+ *  The SensorScan task completes a proximity scan using each of the two distance sensors at a timing of every 60 ms (timing changed since completion of task diagram).
+ *  This timing was computed based off an estimated maximum speed of the car, and the sampling rate necessary to ensure no collisions occur between samples. This task
+ *  utilizes the code described earlier in this report to obtain readings from each sensor. The readings are then placed into two shares to be carried to the
+ *  ProcessSensorData task. \n
+ *  \n
+ *  The ProcessSensorData task uses the distances found from the SensorScan task and determines the appropriate course of action. This task follows a simple logic
+ *  scheme utilizing both sensors. The ultrasonic sensor is used primarily for detection of long distances by checking whether the vehicle is at least 40 cm away
+ *  from other objects. If there are no objects within 40 cm, the vehicle will continue running at full speed. If the vehicle is within 40 cm of other objects,
+ *  the task then looks at the reading of the infrared sensor, which is used to detect short distances. If the vehicle is further than 20 cm from the object,
+ *  the vehicle will slow down to a reduced speed. If the vehicle is within 20 cm, it will come to a complete stop. After coming to a complete stop, the vehicle
+ *  will pause momentarily, and then attempt to turn by driving the wheels in opposite directions, causing to vehicle to rotate (Note: this functionality was
+ *  implemented in the code, but did not work physically as described in the ‘Results’ section). Based off this logic, a duty cycle value is put into a share and
+ *  carried to each of the motors. \n
+ *  \n
+ *  The RSMotor1 and RSMotor2 tasks function primarily in the same way, but with one key difference. In general, both tasks use a duty cycle value provided from
+ *  the corresponding share, and send a command using the motorcontroller class to drive the motor. These tasks also implement some simple arithmetic to change the
+ *  motor at a smoothed rate, except when it is desired to stop the motor immediately. The primary difference between these tasks, is that RSMotor2 runs the motor
+ *  in the clockwise direction, whereas RSMotor1 changes depending on whether it is desired to turn the vehicle. If the intention of running the motor is to drive
+ *  the vehicle forward, then RSMotor1 will run the motor counterclockwise. However, if it is desired to rotate the vehicle, then RSMotor2 will run the motor counterclockwise. \n
+ *  \n
+ *  These tasks were implemented in the main.cpp file shown in the repository. From this code, we were able to successfully drive the car, around a room, with the car
+ *  stopping when it senses an object. Further details on this are described in the Results section.
+ *  
+ *  @author Peyton Ulrich, Matthew Tagupa, and Jose Chavez
+ *
+ *  @copyright (c) 2020 by Peyton Ulrich, Matthew Tagupa, and Jose Chavez
+ *
+ *  @date December 1, 2020
+ *
+ *  @page page_Res Results
+ *  Overall, our system worked well! We could get the two sensors to work and the motors to work with them. Both worked together to keep the vehicle from colliding
+ *  into objects even when the motors were working at top speed. We were also able to demonstrate this in the link provided below: \n
+ *  \n
+ *  Video Demonstration: https://www.youtube.com/watch?v=Pw0nNdHIDUE&ab_channel=MatthewTagupa 
+ *
+ *  \n
+ *  Although the video above makes our project seem successful, we were not entirely satisfied with our results. In the code, there are snippets that indicate
+ *  that the car is supposed to turn when it detects an object with both sensors. However, due to a physical design issues, the car cannot turn on its own.
+ *  That is why in our video, we need to turn the car manually. The issue is that the two front tires spin together on one shaft. The two wheels cannot rotate
+ *  to change their direction so the friction underneath the tires keeps the vehicle from rotating. When we were first testing, we were not able to see this
+ *  issue because the vehicle was supported by a test stand. If we were to return to the design phase for the vehicle, we though it would be more beneficial to
+ *  remove one of the front wheels and move the remaining front wheel to rotate freely. This way, the two rear wheels can control steering and the third wheel
+ *  would be able to rotate without the issue of friction after the third wheel aligns in the direction that the vehicle is rotating. \n
+ *  \n
+ *  Another issue that occurred a few times involved soldering issues. We first wanted to get the motor driver chips soldered on since we knew those would be
+ *  the most difficult to install. Our first attempt at soldering our board, a team member had soldered some of the leads on a transistor together, so that 
+ *  transistor ended up fried and we were left to try again. Due to the current pandemic, only two of our members were able to meet each other and those members
+ *  needed to solder their own boards together. Our attempt was successful, but there was a lot of struggle involved. We needed to use a heat gun to solder the
+ *  motor driver chips on since we were not able to solder the pins on the motor driver without crossing solder over pins that were not supposed to be touching.
+ *  Our first time was unsuccessful, and we ended up soldering all the motor driver leads together. We struggled to get that solder off, so we tried again with
+ *  two new motor driver chips. From this, experience we learned a great multitude of skills about soldering. When soldering the chips on, it is easier to apply 
+ *  solder to the locations where the chip and its pins need to go prior to soldering the chips on. We also learned that when using a heat gun, we do not recommend
+ *  using a fan nearby even if there is lead solder in use. The fan seems to not allow the heat gun to supply a sufficient and constant amount of heat to the board
+ *  when necessary. Also, it is important that when using the heat gun to lightly move chips in small increments because if you move it too much, the chip may slide
+ *  off the solder and end up spreading the solder across the whole circuit board. If this occurs, we also recommend using solder removal, such as ChipQuik, along with
+ *  a solder sucker to remove all the excess solder and then use rubbing alcohol to clean off the surface of the board. \n
+ *  \n
+ *  Although we had so many issues, we are excited about what we were able to complete and our team is ambitious to continue to work on mechatronics projects like
+ *  this and more. Even with the current pandemic which made meeting each other difficult and made completing the project worse, we all enjoyed our collaboration 
+ *  and company as we worked toward our goal. We all are looking forward to all the projects that we want to complete now that we have the knowledge and skill to 
+ *  create our own mechanical control systems using C++ and Eagle. \n
+ *  \n
+ *  @image html Final_Product.png "Figure 16. Final vehicle created " \n
+ *
+ */
+
+  

@@ -1,0 +1,46 @@
+The software development was completed in three primary stages. First, software was developed to obtain distance readings from each of the two sensors. Secondly, a \mbox{\hyperlink{class_motor_control}{Motor\+Control}} class was developed to control the motors using the V\+N\+H5019 motor driver chip. Finally, the entire system was created to integrate these pieces and run the car as desired.\hypertarget{page_code_sec_SSD}{}\doxysection{Sensor Software Development}\label{page_code_sec_SSD}
+First, code was created to obtain distance readings from the H\+C-\/\+S\+R04 ultrasonic sensor. This code was created based on example code found at \href{https://cdn-learn.adafruit.com/downloads/pdf/distance-measurement-ultrasound-hcsr04.pdf}{\texttt{ https\+://cdn-\/learn.\+adafruit.\+com/downloads/pdf/distance-\/measurement-\/ultrasound-\/hcsr04.\+pdf}}. To use the ultrasonic sensor, a pulse must be sent to the T\+R\+IG pin on the sensor for 10us. The sensor will then output several sonic bursts from the transmitter and wait to receive a return signal to the receiver. It will then output a pulse from the E\+C\+HO pin for a duration of time proportional to the distance reading. This duration can then be converted into a distance reading mathematically.
+
+ ~\newline
+ ~\newline
+ Code was then created to run the Sharp G\+P2\+Y0\+A21\+YK infrared sensor. This sensor is supplied with 5V and returns an analog voltage signal corresponding to the detected distance. To utilize this sensor, the Analog\+Read function is used to read the analog voltage that is returned to the corresponding pin. The code to utilize this sensor was based upon code found at \href{https://github.com/sparkfun/simple_sketches/blob/master/sharp/sharp.ino}{\texttt{ https\+://github.\+com/sparkfun/simple\+\_\+sketches/blob/master/sharp/sharp.\+ino}}. The code to use this sensor is shown below.
+
+ ~\newline
+ \hypertarget{page_code_subsec_Cal}{}\doxysubsection{Sensor Calibration}\label{page_code_subsec_Cal}
+The ultrasonic sensor was calibrated by collecting data at distances ranging from 5 cm to 55 cm and recording the pulse duration returned from the sensor. The data was plotted on the scatterplot as shown below and fitted with a linear trend line. The corresponding regression equation was found (with a high R$^\wedge$2 value of 0.\+9995) and used to calculate the conversion factor of 1/58.\+2 to convert from duration to distance.
+
+ ~\newline
+ ~\newline
+ To calibrate this sensor, data was collected at distances ranging from 10cm to 50cm, and the corresponding analog voltage reading was collected. The data was then plotted on the graph shown below using the inverse of distance on the x-\/axis, and voltage reading on the y-\/axis. It should be noted that the voltage reading is shown in the units of the Arduino Analog\+Read function, which returns an integer (from 0 to 1023) that is proportional to the voltage reading in Volts. We then fit a linear trendline to this data (with a R$^\wedge$2 of 0.\+9949), and algebraically determined the conversion from voltage reading to distance from this regression function. ~\newline
+  ~\newline
+ ~\newline
+ \hypertarget{page_code_sec_MCSD}{}\doxysection{Motor Control Software Development}\label{page_code_sec_MCSD}
+Next, software was developed to be able to control a motor using the V\+N\+H5019 motor driver chip. This was done in the form of a class to allow for easy integration into the system while using multiple motors. By structuring the code in this form, the user can declare a \mbox{\hyperlink{class_motor_control}{Motor\+Control}} object and specify the appropriate pins on the S\+T\+M32 nucleo that are connected to each relevant pin on the V\+N\+H5019 chip, and then run the motor through simple lines of code. This code can be found in the motorcontroller.\+h and motorcontroller.\+cpp files in the repository.
+
+ ~\newline
+ ~\newline
+ Four pins on each V\+N\+H5019 motor driver chip on our board are connected to the S\+T\+M32\+: E\+N\+A/B, I\+NA, I\+NB, and P\+WM. By changing the output of these four pins, one can control the direction and speed that the motor is driven at. The code needed to run the motor in various states is based on the truth table shown in Figure 13. To change the direction of the motor, the I\+NA and I\+NB pins may be manipulated, and to brake the motor both pins may be set high. By varying the duty cycle provided to the P\+WM pin, the speed of the motor can be controlled. This logic was implemented in the code shown in Figure 14.
+
+ ~\newline
+ ~\newline
+ \hypertarget{page_code_sec_Int}{}\doxysection{System Integration}\label{page_code_sec_Int}
+After separately developing the code to utilize the two sensors and the motor drivers, code was developed to integrate these functions into a functional system. This was completed based upon the task diagram shown in Figure 15. Four tasks were used in this system and are described individually below. ~\newline
+  ~\newline
+ ~\newline
+ The Sensor\+Scan task completes a proximity scan using each of the two distance sensors at a timing of every 60 ms (timing changed since completion of task diagram). This timing was computed based off an estimated maximum speed of the car, and the sampling rate necessary to ensure no collisions occur between samples. This task utilizes the code described earlier in this report to obtain readings from each sensor. The readings are then placed into two shares to be carried to the Process\+Sensor\+Data task. ~\newline
+ ~\newline
+ The Process\+Sensor\+Data task uses the distances found from the Sensor\+Scan task and determines the appropriate course of action. This task follows a simple logic scheme utilizing both sensors. The ultrasonic sensor is used primarily for detection of long distances by checking whether the vehicle is at least 40 cm away from other objects. If there are no objects within 40 cm, the vehicle will continue running at full speed. If the vehicle is within 40 cm of other objects, the task then looks at the reading of the infrared sensor, which is used to detect short distances. If the vehicle is further than 20 cm from the object, the vehicle will slow down to a reduced speed. If the vehicle is within 20 cm, it will come to a complete stop. After coming to a complete stop, the vehicle will pause momentarily, and then attempt to turn by driving the wheels in opposite directions, causing to vehicle to rotate (Note\+: this functionality was implemented in the code, but did not work physically as described in the ‘\+Results’ section). Based off this logic, a duty cycle value is put into a share and carried to each of the motors. ~\newline
+ ~\newline
+ The R\+S\+Motor1 and R\+S\+Motor2 tasks function primarily in the same way, but with one key difference. In general, both tasks use a duty cycle value provided from the corresponding share, and send a command using the motorcontroller class to drive the motor. These tasks also implement some simple arithmetic to change the motor at a smoothed rate, except when it is desired to stop the motor immediately. The primary difference between these tasks, is that R\+S\+Motor2 runs the motor in the clockwise direction, whereas R\+S\+Motor1 changes depending on whether it is desired to turn the vehicle. If the intention of running the motor is to drive the vehicle forward, then R\+S\+Motor1 will run the motor counterclockwise. However, if it is desired to rotate the vehicle, then R\+S\+Motor2 will run the motor counterclockwise. ~\newline
+ ~\newline
+ These tasks were implemented in the \mbox{\hyperlink{main_8cpp}{main.\+cpp}} file shown in the repository. From this code, we were able to successfully drive the car, around a room, with the car stopping when it senses an object. Further details on this are described in the Results section.
+
+\begin{DoxyAuthor}{Author}
+Peyton Ulrich, Matthew Tagupa, and Jose Chavez
+\end{DoxyAuthor}
+\begin{DoxyCopyright}{Copyright}
+(c) 2020 by Peyton Ulrich, Matthew Tagupa, and Jose Chavez
+\end{DoxyCopyright}
+\begin{DoxyDate}{Date}
+December 1, 2020 
+\end{DoxyDate}

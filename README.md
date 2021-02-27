@@ -1,2 +1,2 @@
-# ME507.github.io
-To display the work done for my Mechanical Control System Design course.
+# ME-507-Term-Project
+This repository is for the Collision Avoidance System

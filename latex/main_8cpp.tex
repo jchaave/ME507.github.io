@@ -1,0 +1,137 @@
+\hypertarget{main_8cpp}{}\doxysection{main.\+cpp File Reference}
+\label{main_8cpp}\index{main.cpp@{main.cpp}}
+{\ttfamily \#include $<$Arduino.\+h$>$}\newline
+{\ttfamily \#include $<$Print\+Stream.\+h$>$}\newline
+{\ttfamily \#include $<$S\+T\+M32\+Free\+R\+T\+O\+S.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}taskshare.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}motorcontrol.\+h\char`\"{}}\newline
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{main_8cpp_aa41944b85fee040548f90f5646de7a37}{task\+\_\+process\+\_\+sensor\+\_\+data}} (void $\ast$p\+\_\+params)
+\begin{DoxyCompactList}\small\item\em Task which processes sensor distance data and determines motor actions. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{main_8cpp_a2ec8d10f3d242ceda9e317391e5b2f75}{task\+\_\+sensor\+\_\+scan}} (void $\ast$p\+\_\+params)
+\begin{DoxyCompactList}\small\item\em Task which scans two proximity sensors and places readings into shares. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{main_8cpp_a8d10a607affb456db666223af3796826}{task\+\_\+\+R\+S\+\_\+\+Motor1}} (void $\ast$p\+\_\+params)
+\begin{DoxyCompactList}\small\item\em Task which runs a motor. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{main_8cpp_a81398860ac94a076db79a586e50f3703}{task\+\_\+\+R\+S\+\_\+\+Motor2}} (void $\ast$p\+\_\+params)
+\begin{DoxyCompactList}\small\item\em Task which runs a motor. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{main_8cpp_a4fc01d736fe50cf5b977f755b675f11d}{setup}} ()
+\begin{DoxyCompactList}\small\item\em Arduino setup function which runs once at program startup. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{main_8cpp_afe461d27b9c48d5921c00d521181f12f}{loop}} ()
+\begin{DoxyCompactList}\small\item\em Arduino\textquotesingle{}s low-\/priority loop function, which we don\textquotesingle{}t use. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{main_8cpp_a0074a6b675dee212b35cbcefca34a1ec}\label{main_8cpp_a0074a6b675dee212b35cbcefca34a1ec}} 
+\mbox{\hyperlink{class_share}{Share}}$<$ float\+\_\+t $>$ {\bfseries U\+S\+\_\+distance} (\char`\"{}cm\char`\"{})
+\item 
+\mbox{\Hypertarget{main_8cpp_ae4b6328c2339032747c9c902a951f889}\label{main_8cpp_ae4b6328c2339032747c9c902a951f889}} 
+\mbox{\hyperlink{class_share}{Share}}$<$ float\+\_\+t $>$ {\bfseries I\+R\+\_\+distance} (\char`\"{}cm\char`\"{})
+\item 
+\mbox{\Hypertarget{main_8cpp_a685576c66c5cf7a1cbd3070156ad7818}\label{main_8cpp_a685576c66c5cf7a1cbd3070156ad7818}} 
+\mbox{\hyperlink{class_share}{Share}}$<$ int32\+\_\+t $>$ {\bfseries M1\+\_\+duty\+\_\+cycle} (\char`\"{}P\+WM\char`\"{})
+\item 
+\mbox{\Hypertarget{main_8cpp_ac1135df0db4e6d431c8ac220f3a67252}\label{main_8cpp_ac1135df0db4e6d431c8ac220f3a67252}} 
+\mbox{\hyperlink{class_share}{Share}}$<$ int32\+\_\+t $>$ {\bfseries M2\+\_\+duty\+\_\+cycle} (\char`\"{}P\+WM\char`\"{})
+\item 
+\mbox{\Hypertarget{main_8cpp_a2796ad8f307b7c731da67987a549823c}\label{main_8cpp_a2796ad8f307b7c731da67987a549823c}} 
+\mbox{\hyperlink{class_share}{Share}}$<$ bool $>$ {\bfseries turn} (\char`\"{}Turn\char`\"{})
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This file contains a program containing 4 tasks to run a collision avoidance car. The car takes in inputs from an ultrasonic sensor and infrared sensor to detect objects. The car is driven by two motors connected to the back two wheels of the car. This program uses the sensors, processes sensor data, and determines how to run the two motors. Task structure based on framework provided by Prof. J.\+R. Ridgeley IR Sensor Code Calculations based on sample code at \href{https://github.com/sparkfun/simple_sketches/blob/master/sharp/sharp.ino}{\texttt{ https\+://github.\+com/sparkfun/simple\+\_\+sketches/blob/master/sharp/sharp.\+ino}} US Sensor Code Calculations based on sample code at \href{https://cdn-learn.adafruit.com/downloads/pdf/distance-measurement-ultrasound-hcsr04.pdf}{\texttt{ https\+://cdn-\/learn.\+adafruit.\+com/downloads/pdf/distance-\/measurement-\/ultrasound-\/hcsr04.\+pdf}}
+
+\begin{DoxyAuthor}{Author}
+Peyton Ulrich, Jose Chavez, Matt Tagupa
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+10 Nov 2020 Original file 
+
+01 Dec 2020 Updated file 
+\end{DoxyDate}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{main_8cpp_afe461d27b9c48d5921c00d521181f12f}\label{main_8cpp_afe461d27b9c48d5921c00d521181f12f}} 
+\index{main.cpp@{main.cpp}!loop@{loop}}
+\index{loop@{loop}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{loop()}{loop()}}
+{\footnotesize\ttfamily void loop (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Arduino\textquotesingle{}s low-\/priority loop function, which we don\textquotesingle{}t use. 
+
+A non-\/\+R\+T\+OS Arduino program runs all of its continuously running code in this function after {\ttfamily \mbox{\hyperlink{main_8cpp_a4fc01d736fe50cf5b977f755b675f11d}{setup()}}} has finished. When using Free\+R\+T\+OS, {\ttfamily \mbox{\hyperlink{main_8cpp_afe461d27b9c48d5921c00d521181f12f}{loop()}}} implements a low priority task on most microcontrollers, and crashes on some others, so we\textquotesingle{}ll not use it. \mbox{\Hypertarget{main_8cpp_a4fc01d736fe50cf5b977f755b675f11d}\label{main_8cpp_a4fc01d736fe50cf5b977f755b675f11d}} 
+\index{main.cpp@{main.cpp}!setup@{setup}}
+\index{setup@{setup}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{setup()}{setup()}}
+{\footnotesize\ttfamily void setup (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Arduino setup function which runs once at program startup. 
+
+This function sets up a serial port for communication and creates the tasks which will be run. \mbox{\Hypertarget{main_8cpp_aa41944b85fee040548f90f5646de7a37}\label{main_8cpp_aa41944b85fee040548f90f5646de7a37}} 
+\index{main.cpp@{main.cpp}!task\_process\_sensor\_data@{task\_process\_sensor\_data}}
+\index{task\_process\_sensor\_data@{task\_process\_sensor\_data}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{task\_process\_sensor\_data()}{task\_process\_sensor\_data()}}
+{\footnotesize\ttfamily void task\+\_\+process\+\_\+sensor\+\_\+data (\begin{DoxyParamCaption}\item[{void $\ast$}]{p\+\_\+params }\end{DoxyParamCaption})}
+
+
+
+Task which processes sensor distance data and determines motor actions. 
+
+This task takes in distance readings from IR and US sensors and determines the correct action from the vehicle. It then places two P\+WM duty cycles to shares which will be carried to the R\+S\+\_\+\+Motor1/\+R\+S\+\_\+\+Motor2 tasks. ~\newline
+ 
+\begin{DoxyParams}{Parameters}
+{\em p\+\_\+params} & A pointer to function parameters which we don\textquotesingle{}t use. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{main_8cpp_a8d10a607affb456db666223af3796826}\label{main_8cpp_a8d10a607affb456db666223af3796826}} 
+\index{main.cpp@{main.cpp}!task\_RS\_Motor1@{task\_RS\_Motor1}}
+\index{task\_RS\_Motor1@{task\_RS\_Motor1}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{task\_RS\_Motor1()}{task\_RS\_Motor1()}}
+{\footnotesize\ttfamily void task\+\_\+\+R\+S\+\_\+\+Motor1 (\begin{DoxyParamCaption}\item[{void $\ast$}]{p\+\_\+params }\end{DoxyParamCaption})}
+
+
+
+Task which runs a motor. 
+
+This task uses the P\+WM duty cycle given to it and decides how to run the motor 
+\begin{DoxyParams}{Parameters}
+{\em p\+\_\+params} & A pointer to function parameters which we don\textquotesingle{}t use. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{main_8cpp_a81398860ac94a076db79a586e50f3703}\label{main_8cpp_a81398860ac94a076db79a586e50f3703}} 
+\index{main.cpp@{main.cpp}!task\_RS\_Motor2@{task\_RS\_Motor2}}
+\index{task\_RS\_Motor2@{task\_RS\_Motor2}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{task\_RS\_Motor2()}{task\_RS\_Motor2()}}
+{\footnotesize\ttfamily void task\+\_\+\+R\+S\+\_\+\+Motor2 (\begin{DoxyParamCaption}\item[{void $\ast$}]{p\+\_\+params }\end{DoxyParamCaption})}
+
+
+
+Task which runs a motor. 
+
+This task uses the P\+WM duty cycle given to it and decides how to run the motor 
+\begin{DoxyParams}{Parameters}
+{\em p\+\_\+params} & A pointer to function parameters which we don\textquotesingle{}t use. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{main_8cpp_a2ec8d10f3d242ceda9e317391e5b2f75}\label{main_8cpp_a2ec8d10f3d242ceda9e317391e5b2f75}} 
+\index{main.cpp@{main.cpp}!task\_sensor\_scan@{task\_sensor\_scan}}
+\index{task\_sensor\_scan@{task\_sensor\_scan}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{task\_sensor\_scan()}{task\_sensor\_scan()}}
+{\footnotesize\ttfamily void task\+\_\+sensor\+\_\+scan (\begin{DoxyParamCaption}\item[{void $\ast$}]{p\+\_\+params }\end{DoxyParamCaption})}
+
+
+
+Task which scans two proximity sensors and places readings into shares. 
+
+This task runs an ultrasonic sensor and an infrared sensor to collect proximity readings. Code to use these sensors is borrowed from example code found online and cited within comments. 
+\begin{DoxyParams}{Parameters}
+{\em p\+\_\+params} & A pointer to function parameters which we don\textquotesingle{}t use. \\
+\hline
+\end{DoxyParams}

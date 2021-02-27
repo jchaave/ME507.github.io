@@ -1,0 +1,18 @@
+After selecting the components for our system, we were able to design the P\+CB to carry these components and interface with the S\+T\+M32 Nucleo. We had originally intended to create a separate board that we would connect to the S\+T\+M32 Nucleo as shown in Figure 4. However, we were advised to make the circuit simple and easy to assemble, therefore we decided to build the circuit around an Arduino shield for the S\+T\+M32 Nucleo. ~\newline
+\hypertarget{page__des_subsec}{}\doxysubsection{P\+C\+B Schematic}\label{page__des_subsec}
+We started the design of the board by looking at how the sensors would connect to the board. The circuit integrating the H\+C-\/\+S\+R04 ultrasonic sensor was based on references \mbox{[}2\mbox{]} and \mbox{[}3\mbox{]}. They utilize two 10k resistors to create a voltage divider that split the sensor’s output signal from 5V to 2.\+5V. The circuit integrating the Sharp G\+P2\+Y0\+A21\+YK infrared sensor was based on reference \mbox{[}4\mbox{]} which also used two 10k resistors as a voltage divider. This also split the sensor’s analog voltage output from a range of 0-\/5V to 0-\/2.\+5V. The voltage dividers in this circuit were intended to keep the return signal to the M\+CU at the readable range of 0-\/3.\+3V. We added screw terminal blocks to make connecting the sensors easy. ~\newline
+ After looking at sensor connections, we added the motor drivers and the components needed to control their inputs and outputs. Dual V\+N\+H5019 motor driver chips were chosen to simultaneously drive two motors. The circuit necessary to run these motor driver chips was based off Pololu’s Dual V\+N\+H5019 Motor Driver Shield for Arduino \mbox{[}5\mbox{]}. Screw terminal blocks were included for the input and output voltage for the motors to make the connection easy and stable.
+
+ ~\newline
+ \hypertarget{page__des_subsec_Board}{}\doxysubsection{P\+C\+B Board Layout}\label{page__des_subsec_Board}
+The last step in our board design was to determine the layout of the components and the connection lines between the components that needed to be connected. When we had first designed our board, the motor drivers were to be mounted along the left side of the board while the rest of the components would be placed on the other side of the board. However, this created a chaotic board design and the motor driver chips did not seem like they would be getting enough voltage to power the motors in a timely manner, which could ultimately permanently damage other resistors on the board. We were recommended to increase the size of connections that were supplying high voltage outputs (of about 12V). We redesigned the board into the one shown. This was the final board we designed and ordered for the Collision Avoidance System. ~\newline
+  ~\newline
+ \begin{DoxyAuthor}{Author}
+Peyton Ulrich, Matthew Tagupa, and Jose Chavez
+\end{DoxyAuthor}
+\begin{DoxyCopyright}{Copyright}
+(c) 2020 by Peyton Ulrich, Matthew Tagupa, and Jose Chavez
+\end{DoxyCopyright}
+\begin{DoxyDate}{Date}
+December 1, 2020 
+\end{DoxyDate}
